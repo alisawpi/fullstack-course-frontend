@@ -6,11 +6,9 @@ const App = (props) => {
   const [points, setPoints] = useState(new Array(anecdotes.length).fill(0))
   const max = anecdotes.length
   const min = 0
-  console.log(points)
 
   const handleClick = () => {
-    const randInd = Math.floor(Math.random() *(max-min) + min)
-    console.log(randInd)
+    const randInd = Math.round(Math.random() *(max-min) + min)
     setSelected(randInd)
   }
 

@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css';
 import Course from './course'; 
+
 const App = () => {
   const courses = [
     {
