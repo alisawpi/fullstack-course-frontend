@@ -1,6 +1,6 @@
 .succesess{ 
-        color: green;
-        background: lightgrey;
+        color: black;
+        background: lightgreen;
         font-size: 20px;
         border-style: solid;
         border-radius: 5px;
@@ -9,8 +9,8 @@
       
 }
 .error {
-    color: red;
-    background: lightgrey;
+    color: black;
+    background: rgb(235, 80, 77);
     font-size: 20px;
     border-style: solid;
     border-radius: 5px;
