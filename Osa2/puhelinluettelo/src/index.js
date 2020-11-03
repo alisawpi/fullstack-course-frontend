@@ -66,7 +66,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filterName, setFilterName] = useState('')
   const [message, setMessage] = useState(null)
-  const [status,setStatus] = useState(false)
+  const [status,setStatus] = useState(false) /*false on fail and true on succesess*/
 
   React.useEffect(() =>
     services.getAll().then(people =>
@@ -94,13 +94,13 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    console.log(existingPerson)
     event.preventDefault()
     if (newName.length === 0 || newNumber.length === 0) {
       setMessage(`Please, fill out all of the fields before submitting!`)
       setStatus(false)
       setTimeout(() => {
-        setMessage(null,status=false)
+        setMessage(null)
+        setStatus(false)
       }, 5000)
     } else if (existingPerson.length > 0) {
       services.updatePerson(existingPerson[0].id, newPerson)
