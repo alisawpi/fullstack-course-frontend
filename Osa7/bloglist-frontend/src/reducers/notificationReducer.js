@@ -1,23 +1,23 @@
 
-const notificationReducer = (state = '', action) => {
+const notificationReducer = (state = {msg: null, ok:true}, action) => {
     switch (action.type) {
         case ('CREATEMESSAGE'):
-            const msg = action.data.msg
+            const msg = action.data.message
             return msg
         case ('RESET'):
-            return ''
+            return {msg: null, ok:true}
         default: return state
     }
 }
 
 let timeoutIDs = []
-
-export const createMsg = (msg, seconds) => {
+/**message = {msg: text, ok: true/false} */
+export const createMessage = (message, seconds = 3) => {
     console.log(timeoutIDs)
     return async dispatch => {
         dispatch({
             type: 'CREATEMESSAGE',
-            data: { msg }
+            data: { message }
         })
         if (timeoutIDs.length === 0) {
             const newID = setTimeout(function () {
@@ -32,8 +32,7 @@ export const createMsg = (msg, seconds) => {
             timeoutIDs = []
             console.log(timeoutIDs)
             const newID = setTimeout(function () {
-                dispatch(deleteMsg())
-            }, 5 * 1000);
+                dispatch(deleteMsg())}, 5 * 1000);
             timeoutIDs.push(newID)
         }
     }
