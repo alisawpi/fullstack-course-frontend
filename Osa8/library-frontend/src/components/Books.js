@@ -10,11 +10,8 @@ const Books = (props) => {
   let [getGenre, resultGenre] = useLazyQuery(ALL_BOOKS_GENRE)
   const [genre, setGenre] = useState('all')
   const [showBooks, setshowBooks] = useState(null)
-  console.log(showBooks)
-  console.log(resultGenre)
 
   useEffect(() => {
-    console.log('effect')
     if (genre === 'all' && result.data){
       setshowBooks(result.data.allBooks)
     }

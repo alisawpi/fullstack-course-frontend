@@ -16,6 +16,15 @@ mutation editAuthor($name: String!, $setBornTo: Int!) {
   }
 }
 `
+const BOOK_DETAILS = gql`
+fragment BookDetails on Book {
+  id
+  title
+  author {name}
+  published
+  genres
+}
+`
 export const ADD_BOOK = gql`
 mutation addBook($title: String!, $author: String!, $published: Int!, $genres: [String]!){
   addBook(
@@ -24,29 +33,26 @@ mutation addBook($title: String!, $author: String!, $published: Int!, $genres: [
     published: $published,
     genres: $genres
   ) {
-    title,
-    author { name }
+    ...BookDetails
   }
 }
+${BOOK_DETAILS}
 `
 export const ALL_BOOKS = gql`
 query {
   allBooks { 
-    title 
-    author {name}
-    published 
-    genres
+    ...BookDetails
   }
 }
+${BOOK_DETAILS}
 `
 export const ALL_BOOKS_GENRE = gql`
 query allBooks($genre: String!) {
   allBooks (genre: $genre) { 
-    title 
-    author {name}
-    published 
-  }
+    ...BookDetails
+  } 
 }
+${BOOK_DETAILS}
 `
 export const LOGIN_USER = gql`
 mutation login($username: String!, $password: String!){
@@ -76,4 +82,13 @@ query {
     id
   }
 }
+`
+
+export const BOOK_ADDED = gql`
+subscription {
+  bookAdded {
+    ...BookDetails
+  }
+}
+${BOOK_DETAILS}
 `

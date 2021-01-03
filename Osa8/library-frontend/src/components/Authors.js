@@ -5,7 +5,7 @@ import { ALL_AUTHORS, EDIT_AUTHOR} from '../queries'
 
 const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
-  const [name, setName] = useState('')
+  const [name, setName] = useState(undefined)
   const [birthYear, setBirthYear] = useState('')
   const [editAuthor] = useMutation(EDIT_AUTHOR, {
     refetchQueries: [ { query: ALL_AUTHORS } ], 
