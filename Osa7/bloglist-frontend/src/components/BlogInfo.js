@@ -1,6 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { deleteBlog, likeBlog,commentBlog } from '../reducers/blogReducer'
+import { deleteBlog, likeBlog, commentBlog } from '../reducers/blogReducer'
+import { Paper,Typography, List, ListItem, FormControl, Button, Input, InputLabel } from '@material-ui/core'
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 
 const BlogInfo = ({ blog }) => {
   const dispatch = useDispatch()
@@ -33,24 +36,32 @@ const BlogInfo = ({ blog }) => {
   }
   return (
     <div className='BlogInfo'>
-      <h1>{blog.title} by {blog.author}</h1>
-      <p className='blogUrl'> {blog.url}</p>
-      <p className='blogLikes'> {blog.likes} Likes
-        <button className='like-button' onClick={handleLikeBlog}> Like </button></p>
-      <p>Added by {blog.user.id === loggedInUser.id ? 'you' : blog.user.name}</p>
-      {blog.user.id === loggedInUser.id ? <button className='DeleteBlog' onClick={handleBlogDelete}> Delete </button> : null}
-      <div className='comment-section'>
-        <h4>Comments</h4>
-        <ul>
-          {blog.comments.map(c => 
-            <li>{c}</li>
-            )}
-        </ul>
-        <form onSubmit={handleComment}>
-        <input type='text' name='comment'value={comment} onChange={(e) => setComment(e.target.value)}></input>
-        <button type='submit' >Add comment</button>
+      <Typography variant='h5'>{blog.title} by {blog.author}</Typography>
+      <Typography variant='p' className='blogUrl'> {blog.url}</Typography>
+      <br/>
+      <Typography variant='p' className='blogLikes'> {blog.likes} Likes
+        <Button ctartIcon={<ThumbUpAltIcon />} className='like-button' onClick={handleLikeBlog}> Like </Button>
+        </Typography>
+        <br/>
+      <Typography variant='p'>Added by {blog.user.id === loggedInUser.id ? 'you' : blog.user.name}</Typography>
+      {blog.user.id === loggedInUser.id ? <Button startIcon={<DeleteOutlineIcon />} className='DeleteBlog' onClick={handleBlogDelete}> Delete </Button> : null}
+      <Paper className='comment-section' style={{margin:'10px 10px', padding: '0px 10px', maxWidth: '30%', height: '20%'}}>
+        <Typography variant='subtitle1'>Comments</Typography>
+        <List style={{maxHeight:'10%'}}>
+          {blog.comments.map(c =>
+            <ListItem>{c}</ListItem>
+          )}
+        </List>
+        <form onSubmit={handleComment} style={{ display: 'flex', flexDirection: 'column', textAlign: 'center'}}>
+          <FormControl>
+            <InputLabel> Comment </InputLabel>
+            <Input type='text' name='comment' value={comment} onChange={(e) => setComment(e.target.value)} />
+          </FormControl>
+          <FormControl>
+            <Button type='submit' >Add comment</Button>
+          </FormControl>
         </form>
-      </div>
+      </Paper>
     </div>
 
   )

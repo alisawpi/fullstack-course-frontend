@@ -38,6 +38,7 @@ username: "newuser2" */
 /**ACTION CREATORS */
 export const createBlog = (blog, creator) => {
   return async dispatch => {
+    try {
     const createdBlog = await blogService.create(blog)
     dispatch({
       type: 'CREATE',
@@ -50,8 +51,11 @@ export const createBlog = (blog, creator) => {
         }
       }
     })
+    dispatch(createMessage({ ok: true, msg: `Created blog ${createdBlog.title} by ${createdBlog.author}` }))
+  } catch {
+    dispatch(createMessage({ ok: true, msg: `Could not create blog ${blog.title} by ${blog.author}` }))
   }
-}
+}}
 /*The parameter is the blog with new info */
 export const likeBlog = (blog) => {
   return async dispatch => {

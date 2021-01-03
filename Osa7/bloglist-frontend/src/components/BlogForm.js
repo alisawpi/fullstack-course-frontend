@@ -1,15 +1,31 @@
 import React, { useState } from 'react'
 import propTypes from 'prop-types'
 import {useHistory} from 'react-router-dom'
+import {useDispatch,useSelector} from 'react-redux'
+import {createMessage} from '../reducers/notificationReducer'
+import {createBlog} from '../reducers/blogReducer'
+import { FormControl, Input, InputLabel, Button, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles'
+
+const useStyles = makeStyles((theme) => ({
+  createBlog: {
+    display: 'flex', 
+    flexDirection: 'column',
+    maxWidth: '20%', 
+   
+  }
+}));
 
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
   const [newLikes, setNewLikes] = useState(0)
   const history = useHistory()
-
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.user)
+  const classes = useStyles()
   const handleTitle = ({ target }) => {
     setNewTitle(target.value)
   }
@@ -24,13 +40,23 @@ const BlogForm = ({ createBlog }) => {
   }
   const handleCreate = (event) => {
     event.preventDefault()
-    const newBlog = {
+    if (!newTitle || !newAuthor || !newUrl){
+      dispatch(createMessage({ok:false, msg:'Please fill out all of the fields!'}))
+      return 
+    }
+    if (!user) {
+      dispatch(createMessage({ok:false, msg:'You must login to create blogs!'}))
+      return 
+    }
+    const blogToCreate = {
       title: newTitle,
       author: newAuthor,
       url: newUrl,
       likes: newLikes,
+      user: user.id
     }
-    createBlog(newBlog)
+    console.log('here')
+    dispatch(createBlog(blogToCreate, user))
     setNewTitle('')
     setNewAuthor('')
     setNewUrl('')
@@ -38,51 +64,54 @@ const BlogForm = ({ createBlog }) => {
     history.push('/')
   }
   return (
-    <><h2>Add a new blog</h2>
-      <form id='createBlog' onSubmit={handleCreate}>
-        <div>
-          Title
-              <input
+    <Paper>
+      <h2>Add a new blog</h2>
+      <form className={classes.createBlog} onSubmit={handleCreate}>
+        <FormControl>
+          <InputLabel>Title</InputLabel>
+              <Input
               id='title'
             type="text"
             value={newTitle}
             name="Title"
             onChange={handleTitle}
           />
-        </div>
-        <div>
-          Author
-              <input
+        </FormControl>
+        <FormControl>
+          <InputLabel>Author</InputLabel>
+              <Input
               id='author'
             type="text"
             value={newAuthor}
             name="Author"
             onChange={handleAuthor}
           />
-        </div>
-        <div>
-          Url
-              <input
+        </FormControl>
+        <FormControl>
+          <InputLabel>Url</InputLabel>
+              <Input
               id='url'
             type="text"
             value={newUrl}
             name="Url"
             onChange={handleUrl}
           />
-        </div>
-        <div>
-          Likes
-              <input
+        </FormControl>
+        <FormControl>
+          <InputLabel>Likes</InputLabel>
+              <Input
               id='likes'
             type="number"
             value={newLikes}
             name="Likes"
             onChange={handleLikes}
           />
-        </div>
-        <button id='submit-blog' type="submit">Add</button>
+        </FormControl>
+        <FormControl>
+        <Button id='submit-blog' type="submit">Add</Button>
+        </FormControl>
       </form>
-    </>
+    </Paper>
   )
 }
 BlogForm.propTypes = {

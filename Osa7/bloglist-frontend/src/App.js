@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react'
-import { initializeBlogs, createBlog } from './reducers/blogReducer'
+import React, { useState, useEffect } from 'react'
+import { initializeBlogs } from './reducers/blogReducer'
 import { createMessage } from './reducers/notificationReducer'
-import { loginUser, logoutUser, initializeUser } from './reducers/userReducer'
+import { loginUser, initializeUser } from './reducers/userReducer'
 import Message from './components/Message'
 import Login from './components/Login'
 import BlogForm from './components/BlogForm';
@@ -15,13 +15,14 @@ import User from './components/User'
 import BlogInfo from './components/BlogInfo'
 import BlogList from './components/BlogList'
 
+
 const App = () => {
   const blogs = useSelector(state => state.blogs)
   const user = useSelector(state => state.user)
   const [allUsers, setAllUsers] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const blogFormRef = useRef()
+
   const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : ((b.likes > a.likes) ? 1 : 0));
 
   console.log(blogs)
@@ -52,31 +53,6 @@ const App = () => {
 
     }
   }
-  const handleLogout = (event) => {
-    event.preventDefault()
-    dispatch(logoutUser())
-    dispatch(createMessage({ ok: true, msg: 'Logged out!' }))
-  }
-  const handleCreateBlog = async (newBlog) => {
-    if (user) {
-      try {
-        const blogToCreate = {
-          title: newBlog.title,
-          author: newBlog.author,
-          url: newBlog.url,
-          likes: newBlog.likes,
-          user: user.id
-        }
-        dispatch(createBlog(blogToCreate, user))
-        dispatch(createMessage({ ok: true, msg: `Created a new blog with title ${newBlog.title} by ${newBlog.author}` }))
-      } catch (exception) {
-        dispatch(createMessage({ ok: false, msg: 'Please, fill out all of the fields!' }))
-      }
-    } else {
-      dispatch(createMessage({ ok: false, msg: 'You must login first!' }))
-    }
-
-  }
 
 
   const matchUser = useRouteMatch('/users/:id')
@@ -101,24 +77,26 @@ const App = () => {
       <Message />
       <div>
         <Menu />
-        <Header user={user} />
-        <Switch>
-          <Route path='/users/:id'>
-            <User user={visitedUser} />
-          </Route>
-          <Route path='/blogs/:id'>
-            <BlogInfo blog={visitedBlog} />
-          </Route>
-          <Route path='/create'>
-            <BlogForm createBlog={handleCreateBlog} />
-          </Route>
-          <Route path='/users'>
-            <UserList users={allUsers} />
-          </Route>
-          <Route path='/'>
-            <BlogList blogs={sortedByLikes} />
-          </Route>
-        </Switch>
+        <div style={{ padding: '10px 10px'}}>
+          <Header user={user} />
+          <Switch>
+            <Route path='/users/:id'>
+              <User user={visitedUser} />
+            </Route>
+            <Route path='/blogs/:id'>
+              <BlogInfo blog={visitedBlog} />
+            </Route>
+            <Route path='/create'>
+              <BlogForm />
+            </Route>
+            <Route path='/users'>
+              <UserList users={allUsers} />
+            </Route>
+            <Route path='/'>
+              <BlogList blogs={sortedByLikes} />
+            </Route>
+          </Switch>
+        </div>
       </div>
     </div>
   )

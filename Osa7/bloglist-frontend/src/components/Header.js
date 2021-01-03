@@ -1,16 +1,12 @@
 import React from 'react'
-import {logoutUser} from '../reducers/userReducer'
-import {useDispatch} from 'react-redux'
+import { Typography } from '@material-ui/core'
 
-const Header = ({user}) => {
-    
-const dispatch = useDispatch()
+const Header = ({ user }) => {
     console.log(user)
     return (
         <div>
-            <h1>Blogs</h1>
-            <p>{user.name} logged in</p>
-            <button onClick={() => dispatch(logoutUser())}>Log out</button>
+            <Typography variant='h4'>Blogs</Typography>
+            <Typography variant='subtitle1'>{user.name} logged in</Typography>
         </div>
     )
 }
