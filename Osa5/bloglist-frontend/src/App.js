@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
-import loginService from './services/login';
+import loginService from './services/login'
 import blogService from './services/blogs'
 import Message from './components/Message'
 import Login from './components/Login'
-import BlogForm from './components/BlogForm';
+import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 
 const App = () => {
@@ -14,7 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [msg, setMsg] = useState(null)
   const blogFormRef = useRef()
-  const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : ((b.likes > a.likes) ? 1 : 0));
+  const sortedByLikes = blogs.sort((a, b) => (a.likes > b.likes) ? -1 : ((b.likes > a.likes) ? 1 : 0))
 
   console.log(msg)
   console.log(blogs)
@@ -99,18 +99,18 @@ const App = () => {
 
   const likeBlog = (blog) => {
     const updatedBlog = {
-      ...blog, 
-      likes: blog.likes +1, 
+      ...blog,
+      likes: blog.likes +1,
       user: blog.user.id
     }
     console.log(updatedBlog)
     console.log(blog)
     try {
       blogService.update(blog.id, updatedBlog)
-      setBlogs(blogs.map(b => b.id !== blog.id ? b : {...updatedBlog, user: blog.user}))
-      setNewMessage({ok:true, msg:`Liked blog ${blog.title} by ${blog.author}`})
+      setBlogs(blogs.map(b => b.id !== blog.id ? b : { ...updatedBlog, user: blog.user }))
+      setNewMessage({ ok:true, msg:`Liked blog ${blog.title} by ${blog.author}` })
     } catch {
-      setNewMessage({ok:false, msg: `Failed to like blog ${blog.title} by ${blog.author}`})
+      setNewMessage({ ok:false, msg: `Failed to like blog ${blog.title} by ${blog.author}` })
     }
 
   }
@@ -118,9 +118,9 @@ const App = () => {
     try {
       blogService.deleteBlog(blog.id)
       setBlogs(blogs.filter(b => b.id !== blog.id))
-      setNewMessage({ok:true, msg: `Deleted blog ${blog.title} by ${blog.author}`})
+      setNewMessage({ ok:true, msg: `Deleted blog ${blog.title} by ${blog.author}` })
     } catch {
-    setNewMessage({ok:false, msg: `Failed to delete ${blog.title} by ${blog.author}!`})
+      setNewMessage({ ok:false, msg: `Failed to delete ${blog.title} by ${blog.author}!` })
     }
   }
 

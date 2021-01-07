@@ -12,7 +12,8 @@ const useStyles = makeStyles((theme) => ({
   }, 
   blogList: {
     display: 'flex',
-    flexDirection: 'row'
+    flexDirection: 'row', 
+    flexWrap: 'wrap'
   }, 
 }));
 

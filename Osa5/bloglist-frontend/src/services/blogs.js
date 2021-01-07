@@ -14,9 +14,9 @@ const getAll = () => {
 }
 
 /**SHOULD BE OF FORM {
-    "title": "Oikea token", 
+    "title": "Oikea token",
     "author": "joku",
-    "url": "jokuosote", 
+    "url": "jokuosote",
     "id": "5fa2e3c9bded3229c0e1fa87"
 } */
 
@@ -41,4 +41,4 @@ const deleteBlog = (id) => {
   return request.then(response => response.data)
 }
 
-export default { getAll, setToken, create, update, deleteBlog}
+export default { getAll, setToken, create, update, deleteBlog }

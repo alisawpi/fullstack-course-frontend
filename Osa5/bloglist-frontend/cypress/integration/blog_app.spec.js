@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-expect-in-promise */
 /* eslint-disable indent */
 /* eslint-disable no-undef */
 describe('Blog app', function() {
@@ -18,7 +19,7 @@ describe('Blog app', function() {
 		cy.visit('http://localhost:3000')
 	})
 
-	/*it('Login from is shown', function() {
+	it('Login from is shown', function() {
 		cy.contains('Login')
 	})
 	it('succeeds with correct credentials', function() {
@@ -33,13 +34,16 @@ describe('Blog app', function() {
 		cy.get('#login-button').click()
 		cy.contains('wrong credentials')
 		cy.contains('Login')
-  })*/
+  })
   describe.only('When logged in', function() {
     beforeEach(function() {
-      cy.get('#username').type('testUser')
-      cy.get('#password').type('testpwd')
-      cy.get('#login-button').click()
-    })/*
+      cy.request('POST', 'http://localhost:3001/api/login', {
+        username: 'testUser', password: 'testpwd'
+      }).then(response => {
+        window.localStorage.setItem('user', JSON.stringify(response.body))
+        cy.visit('http://localhost:3000')
+      })
+    })
     it('A blog can be created', function() {
       cy.contains('Add a new blog').click()
       cy.get('#title').type('my new title')
@@ -74,9 +78,9 @@ describe('Blog app', function() {
       cy.get('.DeleteBlog').click()
       cy.get('my new title').should('not.exist')
     })
-    it('User can not delete blogs of others', function(){
+    //it('User can not delete blogs of others', function(){
   //this is a bonus assignment
-    })*/
+    //})
     it('Blogs are displayed in descending like order', function(){
       cy.contains('Add a new blog').click()
       cy.get('#title').type('my new title')
@@ -100,6 +104,7 @@ describe('Blog app', function() {
         const likesAsNumbers = likes.match(/\d+/g)
         cy.log(likesAsNumbers)
         const sorted = likesAsNumbers.sort(function(a, b){return b-a})
+        // eslint-disable-next-line jest/valid-expect
         expect(likesAsNumbers).to.deep.equal(sorted)
       })
     })

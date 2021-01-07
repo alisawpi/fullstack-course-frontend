@@ -27,6 +27,6 @@
 	},
 	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
-		"project": "./fullstack2020/Osa9/flight_diaries/tsconfig.json"
+		"project": "./fullstack2020/Osa9/Patientor/tsconfig.json"
 	}
 }
